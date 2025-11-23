@@ -12,7 +12,7 @@ class SessionViewModel: ObservableObject {
         self.apiClient = apiClient
     }
 
-    func setCurrentUser(_ user: User) {
+    func setCurrentUser(_ user: User?) {
         currentUser = user
     }
 
