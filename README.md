@@ -66,7 +66,7 @@ Luna is a social venue discovery platform that connects people through shared in
 
 ## Screenshots
 
-### Web Frontend (Flask)
+### Web Frontend (IOS)
 
 ![Luna Desktop Interface](readme-images/desktop.png)
 *Web application with iOS-inspired design and responsive layout*
