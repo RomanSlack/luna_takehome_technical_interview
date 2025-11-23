@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Profile - Luna{% endblock %}
+
+{% block header_title %}Profile{% endblock %}
+
+{% block content %}
+<div class="profile-page">
+    {% if user %}
+    <div class="profile-header">
+        <div class="profile-avatar">
+            {% if user.avatar_url %}
+                <img src="{{ user.avatar_url }}" alt="{{ user.name }}">
+            {% else %}
+                <div class="avatar-placeholder-large">{{ user.name[0] }}</div>
+            {% endif %}
+        </div>
+        <h2>{{ user.name }}</h2>
+        {% if user.bio %}
+            <p class="profile-bio">{{ user.bio }}</p>
+        {% endif %}
+    </div>
+
+    <div class="profile-section">
+        <h3>Friends ({{ friends|length }})</h3>
+        {% if friends %}
+        <div class="friends-grid">
+            {% for friendship in friends %}
+            <div class="friend-item">
+                <div class="friend-avatar">
+                    {% if friendship.friend.avatar_url %}
+                        <img src="{{ friendship.friend.avatar_url }}" alt="{{ friendship.friend.name }}">
+                    {% else %}
+                        <div class="avatar-placeholder-small">{{ friendship.friend.name[0] }}</div>
+                    {% endif %}
+                </div>
+                <div class="friend-info">
+                    <span class="friend-name">{{ friendship.friend.name }}</span>
+                    <div class="friendship-strength">
+                        <div class="strength-bar">
+                            <div class="strength-fill" style="width: {{ (friendship.strength / 5.0 * 100)|round }}%"></div>
+                        </div>
+                        <span class="strength-text">{{ "%.1f"|format(friendship.strength) }}/5.0</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="empty-text">No friends yet</p>
+        {% endif %}
+    </div>
+
+    <div class="profile-section">
+        <h3>Interests ({{ interests|length }})</h3>
+        {% if interests %}
+        <div class="interests-list">
+            {% for interest in interests %}
+            <div class="interest-item">
+                <span class="interest-status status-{{ interest.status|lower }}">{{ interest.status }}</span>
+                <span class="interest-venue">Venue ID: {{ interest.venue_id }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="empty-text">No interests yet</p>
+        {% endif %}
+    </div>
+
+    <button class="logout-button" onclick="window.location.href='{{ url_for('logout') }}'">
+        Switch User
+    </button>
+    {% endif %}
+</div>
+{% endblock %}

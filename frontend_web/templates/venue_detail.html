@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}{{ venue_data.venue.name }} - Luna{% endblock %}
+
+{% block header_title %}Venue Details{% endblock %}
+
+{% block content %}
+<div class="venue-detail-page">
+    <a href="{{ url_for('discover') }}" class="back-button">‹ Back</a>
+
+    <div class="venue-detail-header">
+        <h1>{{ venue_data.venue.name }}</h1>
+        <span class="category-badge">{{ venue_data.venue.category }}</span>
+    </div>
+
+    <div class="venue-info-section">
+        <div class="info-row">
+            <span class="info-icon">📍</span>
+            <span>{{ venue_data.venue.address }}</span>
+        </div>
+
+        {% if venue_data.venue.description %}
+        <div class="info-row description">
+            <p>{{ venue_data.venue.description }}</p>
+        </div>
+        {% endif %}
+
+        <div class="info-row">
+            <span class="info-icon">✨</span>
+            <span>Match Score: <strong>{{ "%.0f"|format(venue_data.score) }}%</strong></span>
+        </div>
+    </div>
+
+    <button class="confirm-button" onclick="confirmInterest({{ venue_data.venue.id }})">
+        Confirm Going
+    </button>
+
+    {% if venue_data.recommended_people %}
+    <div class="recommended-people-section">
+        <h2>Recommended People</h2>
+        <p class="section-subtitle">Friends who might join you</p>
+
+        <div class="people-list">
+            {% for person in venue_data.recommended_people %}
+            <div class="person-card">
+                <div class="person-avatar">
+                    {% if person.user.avatar_url %}
+                        <img src="{{ person.user.avatar_url }}" alt="{{ person.user.name }}">
+                    {% else %}
+                        <div class="avatar-placeholder">{{ person.user.name[0] }}</div>
+                    {% endif %}
+                </div>
+                <div class="person-info">
+                    <h3>{{ person.user.name }}</h3>
+                    {% if person.user.bio %}
+                        <p class="person-bio">{{ person.user.bio }}</p>
+                    {% endif %}
+                    <div class="compatibility-score">
+                        <div class="score-bar">
+                            <div class="score-fill" style="width: {{ person.compatibility_score }}%"></div>
+                        </div>
+                        <span class="score-text">{{ "%.0f"|format(person.compatibility_score) }}% compatible</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+function confirmInterest(venueId) {
+    fetch(`/confirm_interest/${venueId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        showToast(data.message || 'Interest confirmed!', data.success ? 'success' : 'error');
+    })
+    .catch(error => {
+        showToast('Failed to confirm interest', 'error');
+    });
+}
+
+function showToast(message, type = 'success') {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.className = `toast show ${type}`;
+    setTimeout(() => {
+        toast.className = 'toast';
+    }, 3000);
+}
+</script>
+{% endblock %}

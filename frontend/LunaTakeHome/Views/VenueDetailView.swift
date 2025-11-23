@@ -118,7 +118,7 @@ struct VenueDetailView: View {
                         }
                     }
                     .padding()
-                    .background(Color(.systemGray6))
+                    .background(Color.gray.opacity(0.1))
                     .cornerRadius(8)
                     .padding(.horizontal)
                 }
@@ -151,6 +151,8 @@ struct VenueDetailView: View {
             }
             .padding(.vertical)
         }
+        #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
+        #endif
     }
 }

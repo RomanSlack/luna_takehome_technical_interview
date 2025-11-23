@@ -35,5 +35,19 @@ services:
     volumes:
       - ./backend/app:/app/app
 
+  web:
+    build:
+      context: ./frontend_web
+      dockerfile: Dockerfile
+    container_name: luna_web
+    environment:
+      API_BASE_URL: http://api:8000
+    ports:
+      - "5000:5000"
+    depends_on:
+      - api
+    volumes:
+      - ./frontend_web:/app
+
 volumes:
   postgres_data:

@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Discover - Luna{% endblock %}
+
+{% block header_title %}Discover{% endblock %}
+
+{% block content %}
+<div class="discover-page">
+    <div class="user-greeting">
+        <span>Hey, {{ session.user_name }}! 👋</span>
+    </div>
+
+    {% if recommendations %}
+        <div class="venue-list">
+            {% for rec in recommendations %}
+            <div class="venue-card" onclick="window.location.href='{{ url_for('venue_detail', venue_id=rec.venue.id) }}'">
+                <div class="venue-header">
+                    <h2 class="venue-name">{{ rec.venue.name }}</h2>
+                    <span class="venue-category">{{ rec.venue.category }}</span>
+                </div>
+
+                <p class="venue-address">📍 {{ rec.venue.address }}</p>
+
+                {% if rec.venue.description %}
+                <p class="venue-description">{{ rec.venue.description }}</p>
+                {% endif %}
+
+                <div class="venue-meta">
+                    <div class="score-badge">
+                        <span class="score-label">Match Score</span>
+                        <span class="score-value">{{ "%.0f"|format(rec.score) }}%</span>
+                    </div>
+
+                    {% if rec.recommended_people %}
+                    <div class="friends-interested">
+                        <span class="friends-label">{{ rec.recommended_people|length }} friend{% if rec.recommended_people|length != 1 %}s{% endif %} interested</span>
+                        <div class="avatar-stack">
+                            {% for person in rec.recommended_people[:3] %}
+                            <div class="avatar-small" title="{{ person.user.name }}">
+                                {% if person.user.avatar_url %}
+                                    <img src="{{ person.user.avatar_url }}" alt="{{ person.user.name }}">
+                                {% else %}
+                                    <div class="avatar-placeholder-small">{{ person.user.name[0] }}</div>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <span style="font-size: 48px;">🔍</span>
+            <h3>No recommendations yet</h3>
+            <p>We're still learning about your preferences!</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

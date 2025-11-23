@@ -251,7 +251,9 @@ struct ReservationDetailView: View {
             }
             .padding(.vertical)
         }
+        #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
+        #endif
     }
 
     private func participantStatusColor(_ status: ParticipantStatus) -> Color {

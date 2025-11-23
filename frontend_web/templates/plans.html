@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}My Plans - Luna{% endblock %}
+
+{% block header_title %}My Plans{% endblock %}
+
+{% block content %}
+<div class="plans-page">
+    {% if reservations %}
+        <div class="reservations-list">
+            {% for reservation in reservations %}
+            <div class="reservation-card">
+                <div class="reservation-header">
+                    <h3>{{ reservation.venue.name }}</h3>
+                    <span class="status-badge status-{{ reservation.status|lower }}">
+                        {{ reservation.status }}
+                    </span>
+                </div>
+
+                <div class="reservation-details">
+                    <div class="detail-row">
+                        <span class="detail-icon">📍</span>
+                        <span>{{ reservation.venue.address }}</span>
+                    </div>
+
+                    <div class="detail-row">
+                        <span class="detail-icon">🕐</span>
+                        <span>{{ reservation.time.strftime('%B %d, %Y at %I:%M %p') if reservation.time else 'TBD' }}</span>
+                    </div>
+
+                    <div class="detail-row">
+                        <span class="detail-icon">👥</span>
+                        <span>{{ reservation.participants|length }} participant{% if reservation.participants|length != 1 %}s{% endif %}</span>
+                    </div>
+                </div>
+
+                <div class="participants-section">
+                    <h4>Participants</h4>
+                    <div class="participants-list">
+                        {% for participant in reservation.participants %}
+                        <div class="participant-item">
+                            <div class="participant-avatar">
+                                {% if participant.user.avatar_url %}
+                                    <img src="{{ participant.user.avatar_url }}" alt="{{ participant.user.name }}">
+                                {% else %}
+                                    <div class="avatar-placeholder-small">{{ participant.user.name[0] }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="participant-info">
+                                <span class="participant-name">{{ participant.user.name }}</span>
+                                <span class="participant-status status-{{ participant.status|lower }}">
+                                    {{ participant.status }}
+                                </span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                {% if reservation.status == 'PENDING' %}
+                    {% for participant in reservation.participants %}
+                        {% if participant.user_id == session.user_id and participant.status == 'INVITED' %}
+                        <button class="accept-button" onclick="acceptReservation({{ reservation.id }})">
+                            Accept Invitation
+                        </button>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <span style="font-size: 48px;">📅</span>
+            <h3>No plans yet</h3>
+            <p>Start by confirming interest in venues!</p>
+        </div>
+    {% endif %}
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+function acceptReservation(reservationId) {
+    fetch(`/accept_reservation/${reservationId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        showToast(data.message || 'Reservation accepted!', data.success ? 'success' : 'error');
+        if (data.success) {
+            setTimeout(() => location.reload(), 1500);
+        }
+    })
+    .catch(error => {
+        showToast('Failed to accept reservation', 'error');
+    });
+}
+
+function showToast(message, type = 'success') {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.className = `toast show ${type}`;
+    setTimeout(() => {
+        toast.className = 'toast';
+    }, 3000);
+}
+</script>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Select User - Luna{% endblock %}
+
+{% block content %}
+<div class="user-selection">
+    <div class="welcome-header">
+        <h1>Welcome to Luna</h1>
+        <p class="subtitle">Select a user to continue</p>
+    </div>
+
+    <div class="user-list">
+        {% if users %}
+            {% for user in users %}
+            <a href="{{ url_for('select_user', user_id=user.id) }}" class="user-card">
+                <div class="user-avatar">
+                    {% if user.avatar_url %}
+                        <img src="{{ user.avatar_url }}" alt="{{ user.name }}">
+                    {% else %}
+                        <div class="avatar-placeholder">{{ user.name[0] }}</div>
+                    {% endif %}
+                </div>
+                <div class="user-info">
+                    <h3>{{ user.name }}</h3>
+                    {% if user.bio %}
+                        <p class="user-bio">{{ user.bio }}</p>
+                    {% endif %}
+                </div>
+                <span class="chevron">›</span>
+            </a>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <p>No users available. Please seed the database first.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

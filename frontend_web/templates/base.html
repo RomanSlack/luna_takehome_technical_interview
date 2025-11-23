@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>{% block title %}Luna{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <div class="mobile-container">
+        {% if session.user_id %}
+        <header class="header">
+            <h1>{% block header_title %}Luna{% endblock %}</h1>
+        </header>
+        {% endif %}
+
+        <main class="content">
+            {% block content %}{% endblock %}
+        </main>
+
+        {% if session.user_id %}
+        <nav class="bottom-nav">
+            <a href="{{ url_for('discover') }}" class="nav-item {% if current_page == 'discover' %}active{% endif %}">
+                <span class="nav-icon">🌟</span>
+                <span class="nav-label">Discover</span>
+            </a>
+            <a href="{{ url_for('my_plans') }}" class="nav-item {% if current_page == 'plans' %}active{% endif %}">
+                <span class="nav-icon">📅</span>
+                <span class="nav-label">My Plans</span>
+            </a>
+            <a href="{{ url_for('profile') }}" class="nav-item {% if current_page == 'profile' %}active{% endif %}">
+                <span class="nav-icon">👤</span>
+                <span class="nav-label">Profile</span>
+            </a>
+        </nav>
+        {% endif %}
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
