@@ -19,17 +19,17 @@
 
                 <div class="reservation-details">
                     <div class="detail-row">
-                        <span class="detail-icon">📍</span>
+                        <i class="fa-solid fa-location-dot detail-icon"></i>
                         <span>{{ reservation.venue.address }}</span>
                     </div>
 
                     <div class="detail-row">
-                        <span class="detail-icon">🕐</span>
+                        <i class="fa-solid fa-clock detail-icon"></i>
                         <span>{{ reservation.time if reservation.time else 'TBD' }}</span>
                     </div>
 
                     <div class="detail-row">
-                        <span class="detail-icon">👥</span>
+                        <i class="fa-solid fa-users detail-icon"></i>
                         <span>{{ reservation.participants|length }} participant{% if reservation.participants|length != 1 %}s{% endif %}</span>
                     </div>
                 </div>
@@ -77,7 +77,7 @@
         </div>
     {% else %}
         <div class="empty-state">
-            <span style="font-size: 48px;">📅</span>
+            <i class="fa-solid fa-calendar-xmark empty-icon"></i>
             <h3>No plans yet</h3>
             <p>Start by confirming interest in venues!</p>
         </div>

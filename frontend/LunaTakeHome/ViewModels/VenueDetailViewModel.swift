@@ -29,7 +29,7 @@ class VenueDetailViewModel: ObservableObject {
             // Show success message
             confirmationResult = AgentResult(
                 success: true,
-                message: "Interest confirmed! You'll be notified when others confirm.",
+                message: "Interest confirmed! When 2+ people confirm, a reservation will be auto-created. Check 'My Plans' tab.",
                 reservation: nil
             )
         } catch let apiError as APIError {
@@ -40,7 +40,7 @@ class VenueDetailViewModel: ObservableObject {
                 // This happens because the backend may have extra fields
                 confirmationResult = AgentResult(
                     success: true,
-                    message: "Interest confirmed! You'll be notified when others confirm.",
+                    message: "Interest confirmed! When 2+ people confirm, a reservation will be auto-created. Check 'My Plans' tab.",
                     reservation: nil
                 )
                 print("Decoding warning (non-critical): \(underlyingError)")

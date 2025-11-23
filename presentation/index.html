@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luna - Technical Interview Presentation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+        }
+
+        .presentation {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100%;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+            color: white;
+            text-align: center;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 72px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        h2 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        h3 {
+            font-size: 36px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        p, li {
+            font-size: 24px;
+            line-height: 1.6;
+            max-width: 800px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        ul {
+            list-style: none;
+            text-align: left;
+        }
+
+        li {
+            margin: 15px 0;
+            padding-left: 40px;
+            position: relative;
+        }
+
+        li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            font-size: 28px;
+            color: #4ade80;
+        }
+
+        .icon {
+            font-size: 120px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 600;
+            margin: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            width: 100%;
+            max-width: 1000px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.15);
+            padding: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+
+        .card h4 {
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        .card p {
+            font-size: 20px;
+            line-height: 1.5;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.3);
+            border: 2px solid rgba(255,255,255,0.5);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 30px;
+            font-size: 18px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.5);
+            transform: scale(1.05);
+        }
+
+        .slide-number {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            font-size: 18px;
+            color: rgba(255,255,255,0.7);
+            z-index: 1000;
+        }
+
+        .highlight {
+            color: #4ade80;
+            font-weight: 700;
+        }
+
+        .small-text {
+            font-size: 20px;
+            opacity: 0.9;
+        }
+
+        .logo {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        .tech-stack {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .split-slide {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .split-slide .left, .split-slide .right {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .metric {
+            font-size: 64px;
+            font-weight: 800;
+            color: #4ade80;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <div class="logo">🌙</div>
+            <h1>Luna</h1>
+            <h3>Social Venue Discovery Platform</h3>
+            <p class="small-text">Full Stack Technical Interview</p>
+            <p class="small-text">Roman | November 2025</p>
+        </div>
+
+        <!-- Slide 2: Project Overview -->
+        <div class="slide">
+            <i class="fa-solid fa-rocket icon"></i>
+            <h2>Project Overview</h2>
+            <p>A social platform that connects people through shared venue interests, featuring AI-powered recommendations and automated reservation booking</p>
+            <div class="tech-stack">
+                <span class="badge">SwiftUI</span>
+                <span class="badge">Flask</span>
+                <span class="badge">FastAPI</span>
+                <span class="badge">PostgreSQL</span>
+                <span class="badge">Docker</span>
+            </div>
+        </div>
+
+        <!-- Slide 3: Tracks Completed -->
+        <div class="slide">
+            <i class="fa-solid fa-check-circle icon"></i>
+            <h2>Tracks Completed</h2>
+            <ul>
+                <li><span class="highlight">Track 1:</span> iOS Frontend (SwiftUI + MVVM)</li>
+                <li><span class="highlight">Track 2:</span> Backend (Recommendation Engine + AI Agents)</li>
+                <li><span class="highlight">Track 3:</span> Full Stack Integration</li>
+                <li><span class="highlight">Bonus:</span> Flask Web Frontend</li>
+            </ul>
+        </div>
+
+        <!-- Slide 4: Track 1 - iOS Frontend -->
+        <div class="slide">
+            <i class="fa-brands fa-apple icon"></i>
+            <h2>Track 1: iOS Frontend</h2>
+            <div class="grid">
+                <div class="card">
+                    <h4>Architecture</h4>
+                    <p>MVVM Pattern<br>SwiftUI + Combine<br>Async/Await Networking</p>
+                </div>
+                <div class="card">
+                    <h4>Features</h4>
+                    <p>Venue Discovery<br>Social Matching<br>Reservation Management</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Track 2 - Recommendation Engine -->
+        <div class="slide">
+            <i class="fa-solid fa-brain icon"></i>
+            <h2>Recommendation Engine</h2>
+            <div class="split-slide">
+                <div class="left">
+                    <h3>Spatial Analysis</h3>
+                    <ul>
+                        <li>Haversine distance calculations</li>
+                        <li>Exponential decay scoring</li>
+                        <li>Location-based ranking</li>
+                    </ul>
+                </div>
+                <div class="right">
+                    <h3>Social Compatibility</h3>
+                    <ul>
+                        <li>Friendship strength (0-5)</li>
+                        <li>Shared venue interests</li>
+                        <li>Compatibility scoring</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: AI Agents -->
+        <div class="slide">
+            <i class="fa-solid fa-robot icon"></i>
+            <h2>AI Agent System</h2>
+            <h3>Automated Reservation Creation</h3>
+            <ul>
+                <li>Monitors user interest confirmations</li>
+                <li>Auto-creates reservations when 2+ users confirm</li>
+                <li>Prevents duplicate bookings (30-min windows)</li>
+                <li>Seamless user experience</li>
+            </ul>
+        </div>
+
+        <!-- Slide 7: Architecture -->
+        <div class="slide">
+            <i class="fa-solid fa-diagram-project icon"></i>
+            <h2>System Architecture</h2>
+            <div class="grid">
+                <div class="card">
+                    <h4>Frontend Layer</h4>
+                    <p>iOS (SwiftUI)<br>Web (Flask)<br>Mobile-Responsive</p>
+                </div>
+                <div class="card">
+                    <h4>Backend Layer</h4>
+                    <p>FastAPI + Uvicorn<br>SQLAlchemy ORM<br>Pydantic Validation</p>
+                </div>
+                <div class="card">
+                    <h4>Data Layer</h4>
+                    <p>PostgreSQL 16<br>Relational Design<br>ACID Guarantees</p>
+                </div>
+                <div class="card">
+                    <h4>Infrastructure</h4>
+                    <p>Docker Compose<br>Health Checks<br>Hot Reload</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Key Features -->
+        <div class="slide">
+            <i class="fa-solid fa-star icon"></i>
+            <h2>Key Features</h2>
+            <div class="split-slide">
+                <div class="left">
+                    <h3>Discovery</h3>
+                    <ul>
+                        <li>Personalized venue recommendations</li>
+                        <li>Match score visualization</li>
+                        <li>Friend interest indicators</li>
+                    </ul>
+                </div>
+                <div class="right">
+                    <h3>Social</h3>
+                    <ul>
+                        <li>Recommended people per venue</li>
+                        <li>Compatibility scores</li>
+                        <li>Group reservation coordination</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Technical Metrics -->
+        <div class="slide">
+            <i class="fa-solid fa-chart-line icon"></i>
+            <h2>Technical Metrics</h2>
+            <div class="grid">
+                <div class="card">
+                    <p class="metric">3,000+</p>
+                    <p>Lines of Code</p>
+                </div>
+                <div class="card">
+                    <p class="metric">20+</p>
+                    <p>API Endpoints</p>
+                </div>
+                <div class="card">
+                    <p class="metric">2</p>
+                    <p>Frontends</p>
+                </div>
+                <div class="card">
+                    <p class="metric">100%</p>
+                    <p>Docker Deployed</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Product-Market Fit -->
+        <div class="slide">
+            <i class="fa-solid fa-users icon"></i>
+            <h2>Product-Market Fit</h2>
+            <ul>
+                <li><span class="highlight">Intuitive Usability:</span> Clean UI, tab navigation, instant onboarding</li>
+                <li><span class="highlight">Social Growth:</span> Friend visibility drives platform adoption</li>
+                <li><span class="highlight">Utility Value:</span> Automated bookings save time and friction</li>
+                <li><span class="highlight">Network Effects:</span> More users = better recommendations</li>
+            </ul>
+        </div>
+
+        <!-- Slide 11: Bonus - Flask Frontend -->
+        <div class="slide">
+            <i class="fa-solid fa-globe icon"></i>
+            <h2>Bonus: Flask Web Frontend</h2>
+            <h3>100% Feature Parity with iOS</h3>
+            <ul>
+                <li>iOS-inspired mobile-responsive design</li>
+                <li>Works on any device/browser</li>
+                <li>Same API integration as native app</li>
+                <li>Professional Font Awesome icons</li>
+            </ul>
+        </div>
+
+        <!-- Slide 12: Data Model -->
+        <div class="slide">
+            <i class="fa-solid fa-database icon"></i>
+            <h2>Data Model</h2>
+            <div class="split-slide">
+                <div class="left">
+                    <h3>Core Entities</h3>
+                    <ul>
+                        <li>Users</li>
+                        <li>Venues</li>
+                        <li>Friendships</li>
+                    </ul>
+                </div>
+                <div class="right">
+                    <h3>Relations</h3>
+                    <ul>
+                        <li>User Interests</li>
+                        <li>Reservations</li>
+                        <li>Participants</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Code Quality -->
+        <div class="slide">
+            <i class="fa-solid fa-code icon"></i>
+            <h2>Code Quality</h2>
+            <ul>
+                <li>Type hints throughout (Python + Swift)</li>
+                <li>Structured logging with context</li>
+                <li>Comprehensive error handling</li>
+                <li>Unit tests for core algorithms</li>
+                <li>RESTful API design</li>
+            </ul>
+        </div>
+
+        <!-- Slide 14: Development Process -->
+        <div class="slide">
+            <i class="fa-solid fa-laptop-code icon"></i>
+            <h2>Development Process</h2>
+            <p class="highlight">AI-Assisted Development</p>
+            <ul>
+                <li>Backend: 70% AI-assisted (Claude Code)</li>
+                <li>iOS: 80% AI-assisted</li>
+                <li>Web Frontend: 90% AI-assisted</li>
+                <li>Human oversight on architecture & design</li>
+            </ul>
+        </div>
+
+        <!-- Slide 15: Demo Time -->
+        <div class="slide">
+            <i class="fa-solid fa-video icon"></i>
+            <h1>Demo Time</h1>
+            <p>Let's see it in action!</p>
+        </div>
+
+        <!-- Slide 16: Thank You -->
+        <div class="slide">
+            <div class="logo">🌙</div>
+            <h1>Thank You</h1>
+            <p>Questions?</p>
+            <div class="tech-stack">
+                <span class="badge"><i class="fa-brands fa-github"></i> GitHub</span>
+                <span class="badge"><i class="fa-solid fa-envelope"></i> Email</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-number">
+        <span id="current-slide">1</span> / <span id="total-slides">16</span>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" onclick="previousSlide()">
+            <i class="fa-solid fa-arrow-left"></i> Previous
+        </button>
+        <button class="nav-btn" onclick="nextSlide()">
+            Next <i class="fa-solid fa-arrow-right"></i>
+        </button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        document.getElementById('total-slides').textContent = totalSlides;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            document.getElementById('current-slide').textContent = currentSlide + 1;
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function previousSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                previousSlide();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -7,7 +7,8 @@
 {% block content %}
 <div class="discover-page">
     <div class="user-greeting">
-        <span>Hey, {{ session.user_name }}! 👋</span>
+        <i class="fa-solid fa-hand-wave"></i>
+        <span>Hey, {{ session.user_name }}!</span>
     </div>
 
     {% if recommendations %}
@@ -19,7 +20,10 @@
                     <span class="venue-category">{{ rec.venue.category }}</span>
                 </div>
 
-                <p class="venue-address">📍 {{ rec.venue.address }}</p>
+                <p class="venue-address">
+                    <i class="fa-solid fa-location-dot"></i>
+                    {{ rec.venue.address }}
+                </p>
 
                 {% if rec.venue.description %}
                 <p class="venue-description">{{ rec.venue.description }}</p>
@@ -53,7 +57,7 @@
         </div>
     {% else %}
         <div class="empty-state">
-            <span style="font-size: 48px;">🔍</span>
+            <i class="fa-solid fa-magnifying-glass empty-icon"></i>
             <h3>No recommendations yet</h3>
             <p>We're still learning about your preferences!</p>
         </div>

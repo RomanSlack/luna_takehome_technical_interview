@@ -62,6 +62,14 @@ struct MyReservationsView: View {
                     await viewModel.loadReservations(userId: userId)
                 }
             }
+            .onAppear {
+                // Refresh reservations when tab appears
+                Task {
+                    if let userId = sessionViewModel.currentUser?.id {
+                        await viewModel.loadReservations(userId: userId)
+                    }
+                }
+            }
         }
     }
 }

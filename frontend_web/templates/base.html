@@ -6,6 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <title>{% block title %}Luna{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     {% block extra_css %}{% endblock %}
 </head>
@@ -24,15 +25,15 @@
         {% if session.user_id %}
         <nav class="bottom-nav">
             <a href="{{ url_for('discover') }}" class="nav-item {% if current_page == 'discover' %}active{% endif %}">
-                <span class="nav-icon">🌟</span>
+                <i class="fa-solid fa-compass nav-icon"></i>
                 <span class="nav-label">Discover</span>
             </a>
             <a href="{{ url_for('my_plans') }}" class="nav-item {% if current_page == 'plans' %}active{% endif %}">
-                <span class="nav-icon">📅</span>
+                <i class="fa-solid fa-calendar-check nav-icon"></i>
                 <span class="nav-label">My Plans</span>
             </a>
             <a href="{{ url_for('profile') }}" class="nav-item {% if current_page == 'profile' %}active{% endif %}">
-                <span class="nav-icon">👤</span>
+                <i class="fa-solid fa-user nav-icon"></i>
                 <span class="nav-label">Profile</span>
             </a>
         </nav>

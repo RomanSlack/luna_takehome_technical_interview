@@ -6,7 +6,9 @@
 
 {% block content %}
 <div class="venue-detail-page">
-    <a href="{{ url_for('discover') }}" class="back-button">‹ Back</a>
+    <a href="{{ url_for('discover') }}" class="back-button">
+        <i class="fa-solid fa-arrow-left"></i> Back
+    </a>
 
     <div class="venue-detail-header">
         <h1>{{ venue_data.venue.name }}</h1>
@@ -15,7 +17,7 @@
 
     <div class="venue-info-section">
         <div class="info-row">
-            <span class="info-icon">📍</span>
+            <i class="fa-solid fa-location-dot info-icon"></i>
             <span>{{ venue_data.venue.address }}</span>
         </div>
 
@@ -26,7 +28,7 @@
         {% endif %}
 
         <div class="info-row">
-            <span class="info-icon">✨</span>
+            <i class="fa-solid fa-star info-icon"></i>
             <span>Match Score: <strong>{{ "%.0f"|format(venue_data.score) }}%</strong></span>
         </div>
     </div>
