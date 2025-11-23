@@ -15,7 +15,7 @@
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)
 
 
-![Luna Desktop View](readme-images/desktop.png)
+<img src="readme-images/desktop.png" alt="Luna Desktop View" width="50%"/>
 </div>
 
 ---
