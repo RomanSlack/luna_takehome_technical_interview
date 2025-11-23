@@ -37,7 +37,26 @@ class APIClient {
         self.session = URLSession.shared
 
         self.decoder = JSONDecoder()
-        self.decoder.dateDecodingStrategy = .iso8601
+        // Use custom date decoding to handle ISO8601 with fractional seconds
+        let dateFormatter = ISO8601DateFormatter()
+        dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        self.decoder.dateDecodingStrategy = .custom { decoder in
+            let container = try decoder.singleValueContainer()
+            let dateString = try container.decode(String.self)
+
+            // Try with fractional seconds first
+            if let date = dateFormatter.date(from: dateString) {
+                return date
+            }
+
+            // Fallback to standard ISO8601
+            dateFormatter.formatOptions = [.withInternetDateTime]
+            if let date = dateFormatter.date(from: dateString) {
+                return date
+            }
+
+            throw DecodingError.dataCorruptedError(in: container, debugDescription: "Cannot decode date string \(dateString)")
+        }
 
         self.encoder = JSONEncoder()
         self.encoder.dateEncodingStrategy = .iso8601
