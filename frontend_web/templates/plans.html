@@ -25,7 +25,7 @@
 
                     <div class="detail-row">
                         <span class="detail-icon">🕐</span>
-                        <span>{{ reservation.time.strftime('%B %d, %Y at %I:%M %p') if reservation.time else 'TBD' }}</span>
+                        <span>{{ reservation.time if reservation.time else 'TBD' }}</span>
                     </div>
 
                     <div class="detail-row">
@@ -57,15 +57,21 @@
                     </div>
                 </div>
 
-                {% if reservation.status == 'PENDING' %}
-                    {% for participant in reservation.participants %}
-                        {% if participant.user_id == session.user_id and participant.status == 'INVITED' %}
-                        <button class="accept-button" onclick="acceptReservation({{ reservation.id }})">
-                            Accept Invitation
-                        </button>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
+                <div class="reservation-actions">
+                    {% if reservation.status == 'PENDING' %}
+                        {% for participant in reservation.participants %}
+                            {% if participant.user_id == session.user_id and participant.status == 'INVITED' %}
+                            <button class="accept-button" onclick="acceptReservation({{ reservation.id }})">
+                                Accept Invitation
+                            </button>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+
+                    <button class="cancel-button" onclick="cancelReservation({{ reservation.id }})">
+                        Cancel Plan
+                    </button>
+                </div>
             </div>
             {% endfor %}
         </div>
@@ -97,6 +103,29 @@ function acceptReservation(reservationId) {
     })
     .catch(error => {
         showToast('Failed to accept reservation', 'error');
+    });
+}
+
+function cancelReservation(reservationId) {
+    if (!confirm('Are you sure you want to cancel this plan?')) {
+        return;
+    }
+
+    fetch(`/cancel_reservation/${reservationId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        showToast(data.message || 'Plan cancelled!', data.success ? 'success' : 'error');
+        if (data.success) {
+            setTimeout(() => location.reload(), 1500);
+        }
+    })
+    .catch(error => {
+        showToast('Failed to cancel plan', 'error');
     });
 }
 

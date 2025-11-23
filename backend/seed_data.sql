@@ -40,20 +40,20 @@ INSERT INTO venues (id, name, category, address, latitude, longitude, descriptio
 (10, 'Central Park', 'park', 'Central Park, New York, NY 10022', 40.7829, -73.9654, 'Iconic urban park perfect for walks and picnics');
 
 -- Insert some interests
-INSERT INTO user_interests (user_id, venue_id, status) VALUES
-(1, 1, 'INTERESTED'),
-(1, 3, 'INTERESTED'),
-(2, 1, 'INTERESTED'),
-(2, 4, 'CONFIRMED'),
-(2, 6, 'INTERESTED'),
-(3, 1, 'INTERESTED'),
-(3, 7, 'CONFIRMED'),
-(3, 10, 'INTERESTED'),
-(4, 1, 'CONFIRMED'),
-(4, 3, 'INTERESTED'),
-(4, 5, 'INTERESTED'),
-(5, 4, 'CONFIRMED'),
-(5, 8, 'INTERESTED');
+INSERT INTO user_interests (user_id, venue_id, status, created_at) VALUES
+(1, 1, 'INTERESTED', NOW()),
+(1, 3, 'INTERESTED', NOW()),
+(2, 1, 'INTERESTED', NOW()),
+(2, 4, 'CONFIRMED', NOW()),
+(2, 6, 'INTERESTED', NOW()),
+(3, 1, 'INTERESTED', NOW()),
+(3, 7, 'CONFIRMED', NOW()),
+(3, 10, 'INTERESTED', NOW()),
+(4, 1, 'CONFIRMED', NOW()),
+(4, 3, 'INTERESTED', NOW()),
+(4, 5, 'INTERESTED', NOW()),
+(5, 4, 'CONFIRMED', NOW()),
+(5, 8, 'INTERESTED', NOW());
 
 -- Reset sequences to continue from max ID
 SELECT setval('users_id_seq', (SELECT MAX(id) FROM users));

@@ -2,13 +2,16 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import and_
 from typing import List
+from datetime import datetime, timedelta
 from app.db import get_db
 from app.models import (
     User as UserModel,
     Venue as VenueModel,
     UserInterest as UserInterestModel,
+    InterestStatus,
 )
 from app.schemas import UserInterest, UserInterestCreate
+from app.services.agent import auto_create_reservation_if_ready
 import logging
 
 logger = logging.getLogger(__name__)
@@ -63,7 +66,7 @@ def create_or_update_interest(
             f"Updated interest for user {user_id} in venue {interest.venue_id} to {interest.status}",
             extra={"user_id": user_id, "venue_id": interest.venue_id},
         )
-        return existing_interest
+        result_interest = existing_interest
     else:
         # Create new interest
         db_interest = UserInterestModel(
@@ -78,4 +81,47 @@ def create_or_update_interest(
             f"Created interest for user {user_id} in venue {interest.venue_id} with status {interest.status}",
             extra={"user_id": user_id, "venue_id": interest.venue_id},
         )
-        return db_interest
+        result_interest = db_interest
+
+    # If status is CONFIRMED, trigger agent to check for auto-reservation
+    if interest.status == InterestStatus.CONFIRMED:
+        # Get all users who have confirmed interest in this venue
+        confirmed_users = (
+            db.query(UserInterestModel)
+            .filter(
+                and_(
+                    UserInterestModel.venue_id == interest.venue_id,
+                    UserInterestModel.status == InterestStatus.CONFIRMED,
+                )
+            )
+            .all()
+        )
+
+        confirmed_user_ids = [ui.user_id for ui in confirmed_users]
+
+        # If 2 or more users confirmed, try to create reservation
+        if len(confirmed_user_ids) >= 2:
+            # Set reservation time to tomorrow at 7 PM
+            reservation_time = datetime.now() + timedelta(days=1)
+            reservation_time = reservation_time.replace(hour=19, minute=0, second=0, microsecond=0)
+
+            agent_result = auto_create_reservation_if_ready(
+                db=db,
+                venue_id=interest.venue_id,
+                user_ids=confirmed_user_ids,
+                time=reservation_time,
+                creator_user_id=user_id,
+            )
+
+            if agent_result["success"]:
+                logger.info(
+                    f"Auto-created reservation for venue {interest.venue_id}",
+                    extra={"venue_id": interest.venue_id, "user_count": len(confirmed_user_ids)},
+                )
+            else:
+                logger.info(
+                    f"Agent did not create reservation: {agent_result['message']}",
+                    extra={"venue_id": interest.venue_id},
+                )
+
+    return result_interest

@@ -657,6 +657,13 @@ body {
     border-radius: 8px;
 }
 
+.reservation-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 16px;
+}
+
 .accept-button {
     width: 100%;
     padding: 14px;
@@ -667,11 +674,27 @@ body {
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    margin-top: 16px;
     transition: opacity 0.2s;
 }
 
 .accept-button:active {
+    opacity: 0.8;
+}
+
+.cancel-button {
+    width: 100%;
+    padding: 14px;
+    background: var(--error-color);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.cancel-button:active {
     opacity: 0.8;
 }
 

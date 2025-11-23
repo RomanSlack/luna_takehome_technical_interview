@@ -162,3 +162,25 @@ def get_user_reservations(user_id: int, db: Session = Depends(get_db)):
     )
 
     return reservations
+
+
+@router.delete("/{reservation_id}")
+def cancel_reservation(reservation_id: int, db: Session = Depends(get_db)):
+    """Cancel/delete a reservation."""
+    reservation = (
+        db.query(ReservationModel).filter(ReservationModel.id == reservation_id).first()
+    )
+
+    if not reservation:
+        raise HTTPException(status_code=404, detail="Reservation not found")
+
+    # Delete the reservation (cascade will delete participants)
+    db.delete(reservation)
+    db.commit()
+
+    logger.info(
+        f"Cancelled reservation {reservation_id}",
+        extra={"reservation_id": reservation_id},
+    )
+
+    return {"success": True, "message": "Reservation cancelled"}

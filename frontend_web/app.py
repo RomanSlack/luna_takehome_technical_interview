@@ -163,6 +163,22 @@ def accept_reservation(reservation_id):
         return jsonify({'success': False, 'message': 'Failed to accept reservation'}), 500
 
 
+@app.route('/cancel_reservation/<int:reservation_id>', methods=['POST'])
+def cancel_reservation(reservation_id):
+    """Cancel/delete a reservation"""
+    if 'user_id' not in session:
+        return jsonify({'error': 'Not logged in'}), 401
+
+    try:
+        response = requests.delete(f"{API_BASE_URL}/reservations/{reservation_id}", timeout=5)
+        response.raise_for_status()
+        result = response.json()
+        return jsonify({'success': True, 'message': result.get('message', 'Reservation cancelled!')})
+    except requests.exceptions.RequestException as e:
+        print(f"API Error: {e}")
+        return jsonify({'success': False, 'message': 'Failed to cancel reservation'}), 500
+
+
 @app.route('/profile')
 def profile():
     """Profile page"""
